@@ -38,7 +38,7 @@ int main(int argc, char* argv[])
       free(schema[i]);
    }
    free(schema);
-   system("pause");
+   //system("pause");
    return risultato;
 }
 

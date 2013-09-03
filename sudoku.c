@@ -57,13 +57,13 @@ int **acquisisci(char* nomefile, int *dim_ptr)
       exit(1);
    }
 
-   /* leggo la prima volta il file per sapere la dimensione dello schema */
+   /* read once the input file to know the sudoku table size */
    while (fgets(buf, MAXBUFFER, fp) != NULL) {
       dimensione++;
    }
    fclose(fp);
 
-   /* allocazione memoria necessaria */
+   /* allocate necessary memory */
    schema = (int**)malloc((dimensione)*sizeof(int*));
    if (schema == NULL) {
       printf("Errore durante l'allocazione della memoria\n");
@@ -78,7 +78,7 @@ int **acquisisci(char* nomefile, int *dim_ptr)
       }
    }
 
-   /* leggo una seconda volta il file per memorizzare lo schema iniziale */
+   /* read again the input file to save data */
    fp = fopen(nomefile, "r");
    if (fp == NULL) {
       printf("Errore durante l'apertura del file\n");
@@ -103,20 +103,20 @@ int trova(int **schema, int dim, int passo)
 {
    int i, j, k;
 
-   /* verifica di terminazione */
+   /* whene the recursive search must return */
    if (passo >= dim*dim) {
       return 1;
    }
 
-   /* indici casella corrente */
+   /* current box indices */
    i = passo / dim;
    j = passo % dim;
    if (schema[i][j] != 0) {
-      /* casella inizialmente piena: nessun tentativo da fare */
+      /* box is already full: nothing to be done */
       return trova(schema, dim, passo+1);
    }
 
-   /* provo tutti i possibili valori da 1 a dim */
+   /* i try all the possible value between 1 and dim */
    for (k=1; k<=dim; k++) {
       schema[i][j] = k;
       if (controlla(schema, dim, passo)) {
@@ -137,26 +137,26 @@ int controlla(int **schema, int dim, int passo)
 {
    int i, j, k, h, val, ib, jb, n=sqrt(dim);
 
-   /* indici della casella corrente */
+   /* current box indices */
    i = passo / dim;
    j = passo % dim;
    val = schema[i][j];
 
-   /* controllo la riga */
+   /* check the line */
    for (h=0; h<dim; h++)
       if ((schema[i][h]==val) && (h!=j))
 	     return 0;
 
-   /* controllo la colonna */
+   /* check the row */
    for (k=0; k<dim; k++)
       if ((schema[k][j]==val) && (k!=i))
 	     return 0;
 
-   /* indici iniziali del blocco da controllare */
+   /* starting indices of the box to be checked */
    ib = (i/n) * n;
    jb = (j/n) * n;
 
-   /* controllo il blocco */
+   /* check the box */
    for (k=ib; k<ib+n; k++)
       for (h=jb; h<jb+n; h++)
 	     if ((schema[k][h]==val) && (k!=i || h!=j))

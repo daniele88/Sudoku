@@ -97,7 +97,7 @@ int **acquisisci(char* nomefile, int *dim_ptr)
 }
 
 /********************************************************************
-  Ricorsive function to find a solution
+  Recursive function to find a solution
 ********************************************************************/
 int trova(int **schema, int dim, int passo)
 {
@@ -116,7 +116,7 @@ int trova(int **schema, int dim, int passo)
       return trova(schema, dim, passo+1);
    }
 
-   /* i try all the possible value between 1 and dim */
+   /* try all the possible value between 1 and dim */
    for (k=1; k<=dim; k++) {
       schema[i][j] = k;
       if (controlla(schema, dim, passo)) {
